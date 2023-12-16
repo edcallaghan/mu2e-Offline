@@ -96,6 +96,16 @@ namespace mu2e {
         (e.inTag, e.resolvedInstanceName(), &Mu2eProductMixer::mixEventIDs, *this);
     }
 
+    for(const auto& e: conf.strawDigiMixer().mixingMap()) {
+      helper.declareMixOp
+        (e.inTag, e.resolvedInstanceName(), &Mu2eProductMixer::mixStrawDigis, *this);
+    }
+
+    for(const auto& e: conf.strawDigiADCWaveformMixer().mixingMap()) {
+      helper.declareMixOp
+        (e.inTag, e.resolvedInstanceName(), &Mu2eProductMixer::mixStrawDigiADCWaveforms, *this);
+    }
+
     //----------------------------------------------------------------
     // VolumeInfo handling
 
@@ -393,6 +403,38 @@ namespace mu2e {
       auto& step = out[i];
       step.setSimParticle( remap(step.simParticle(), simOffsets_[ie]) );
     }
+
+    return true;
+  }
+
+  bool Mu2eProductMixer::mixStrawDigis(std::vector<StrawDigiCollection const*> const& in,
+                     StrawDigiCollection& out,
+                     art::PtrRemapper const& remap)
+  {
+    std::vector<StrawDigiCollection::size_type> stepOffsets;
+    art::flattenCollections(in, out, stepOffsets);
+
+    // TODO consistency checks between digital contexts of primary (signal)
+    // and secondary (data)
+
+    // TODO check for and resolve digi collisions, wherein two
+    // digis in the same straw are added in analog and redigitized
+
+    return true;
+  }
+
+  bool Mu2eProductMixer::mixStrawDigiADCWaveforms(std::vector<StrawDigiADCWaveformCollection const*> const& in,
+                     StrawDigiADCWaveformCollection& out,
+                     art::PtrRemapper const& remap)
+  {
+    std::vector<StrawDigiADCWaveformCollection::size_type> stepOffsets;
+    art::flattenCollections(in, out, stepOffsets);
+
+    // TODO consistency checks between digital contexts of primary (signal)
+    // and secondary (data)
+
+    // TODO check for and resolve digi collisions, wherein two
+    // digis in the same straw are added in analog and redigitized
 
     return true;
   }

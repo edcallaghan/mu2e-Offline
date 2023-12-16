@@ -42,6 +42,7 @@
 #include "Offline/MCDataProducts/inc/SimTimeOffset.hh"
 #include "Offline/MCDataProducts/inc/PhysicalVolumeInfoMultiCollection.hh"
 
+#include "Offline/RecoDataProducts/inc/StrawDigi.hh"
 
 
 //================================================================
@@ -102,6 +103,8 @@ namespace mu2e {
       fhicl::Table<CollectionMixerConfig> crvStepMixer { fhicl::Name("crvStepMixer") };
       fhicl::Table<CollectionMixerConfig> extMonSimHitMixer { fhicl::Name("extMonSimHitMixer") };
       fhicl::Table<CollectionMixerConfig> eventIDMixer { fhicl::Name("eventIDMixer") };
+      fhicl::Table<CollectionMixerConfig> strawDigiMixer { fhicl::Name("strawDigiMixer") };
+      fhicl::Table<CollectionMixerConfig> strawDigiADCWaveformMixer { fhicl::Name("strawDigiADCWaveformMixer") };
       fhicl::OptionalTable<CosmicLivetimeMixerConfig> cosmicLivetimeMixer { fhicl::Name("cosmicLivetimeMixer") };
       fhicl::OptionalTable<VolumeInfoMixerConfig> volumeInfoMixer { fhicl::Name("volumeInfoMixer") };
       fhicl::OptionalAtom<art::InputTag> simTimeOffset { fhicl::Name("simTimeOffset"), fhicl::Comment("Simulation time offset to apply (optional)") };
@@ -147,6 +150,15 @@ namespace mu2e {
     bool mixExtMonSimHits(std::vector<ExtMonFNALSimHitCollection const*> const& in,
                           ExtMonFNALSimHitCollection& out,
                           art::PtrRemapper const& remap);
+
+    bool mixStrawDigis(std::vector<StrawDigiCollection const*> const& in,
+                       StrawDigiCollection& out,
+                       art::PtrRemapper const& remap);
+
+    bool mixStrawDigiADCWaveforms(std::vector<StrawDigiADCWaveformCollection const*> const& in,
+                       StrawDigiADCWaveformCollection& out,
+                       art::PtrRemapper const& remap);
+
 
     bool mixEventIDs(std::vector<art::EventIDSequence const*> const &in,
                      art::EventIDSequence& out,
