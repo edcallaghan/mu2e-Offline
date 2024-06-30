@@ -1,5 +1,5 @@
 //
-//  Persistent representation of the BTrk Kalman filter fit (KalRep)
+//  Persistent representation of the Kalman filter fit
 //  Original author: Dave Brown (LBNL) 31 Aug 2016
 //
 #ifndef RecoDataProducts_KalSeed_HH
@@ -53,7 +53,8 @@ namespace mu2e {
     KinKal::TimeRange timeRange() const { return KinKal::TimeRange(_segments.front()._tmin,_segments.back()._tmax); }
     bool hasCaloCluster() const { return _chit.caloCluster().isNonnull(); }
     art::Ptr<CaloCluster> const& caloCluster() const { return _chit.caloCluster(); }
-    std::vector<KalSegment>::const_iterator nearestSeg(double time)  const;
+    std::vector<KalSegment>::const_iterator nearestSegment(double time)  const;
+    std::vector<KalSegment>::const_iterator t0Segment(double& t0) const; // return the segment associated with the t0 value, or the closest to it.  Also return the t0 value
     std::vector<KalIntersection>::const_iterator intersection(SurfaceId const& id)  const;
     bool loopHelixFit() const { return _status.hasAllProperties(TrkFitFlag::KKLoopHelix); }
     bool centralHelixFit() const { return _status.hasAllProperties(TrkFitFlag::KKCentralHelix); }
@@ -81,7 +82,6 @@ namespace mu2e {
     std::vector<TrkStrawHitSeed>    _hits; // hit seeds for all the hits used in this fit
     std::vector<TrkStraw>     _straws; // straws interesected by this fit
     TrkCaloHitSeed        _chit;  // CaloCluster-based hit.  If it has no CaloCluster, this has no content
-    std::vector<KalSegment>::const_iterator nearestSegment(float time)  const;
     //
     // deprecated BTrk legacy content, DO NOT write any new code which depends on these functions
     // find the nearest segment to a given the time
